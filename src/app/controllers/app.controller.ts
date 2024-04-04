@@ -15,18 +15,19 @@ export class AppController {
       res.render("login");
     });
 
-    this.router.post("/login", (req: Request, res: Response) => {
+    this.router.post("/login", (req: any, res: Response) => {
       req.session.user = req.body.username;
       res.redirect("/");
     });
 
-    this.router.get("layout", (req: any, res: Response) => {
+    this.router.get("logout", (req: any, res: Response) => {
       req.session.destroy(() => {
         res.redirect("/");
       });
     });
 
     // Protect the homepage!
+    // can do const enforceLogin = ((req: any, res: Response, next) => { and put enforceLogin into the get routes to enforce login
     this.router.use((req: any, res: Response, next) => {
       if (req.session.user) {
         next();
@@ -36,7 +37,7 @@ export class AppController {
     });
 
     // Serve the home page
-    this.router.get("/", (req: Request, res: Response) => {
+    this.router.get("/", (req: any, res: Response) => {
       try {
         // Render the "home" template as HTML
         res.render("home", {
